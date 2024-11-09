@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facial Recognition with Anti-Spoofing and Deepfake Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 20px;
+            font-size: 16px;
+        }
+        
+        #video {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Facial Recognition with Anti-Spoofing and Deepfake Detection</h1>
+    <p>Select a feature below:</p>
+    <button onclick="startFaceDetection()">Face Detection</button>
+    <button onclick="startAntiSpoofing()">Anti-Spoofing</button>
+    <button onclick="startDeepfakeDetection()">Deepfake Detection</button>
+
+    <video id="video" autoplay></video>
+    <input type="file" id="fileInput" style="display:none" onchange="uploadFile()">
+
+    <script>
+        function startFaceDetection() {
+            document.getElementById('video').style.display = "block";
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    document.getElementById('video').srcObject = stream;
+                })
+                .catch(function(error) {
+                    alert("Error accessing webcam.");
+                });
+        }
+
+        function startAntiSpoofing() {
+            document.getElementById('video').style.display = "block";
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    document.getElementById('video').srcObject = stream;
+                })
+                .catch(function(error) {
+                    alert("Error accessing webcam.");
+                });
+        }
+
+        function startDeepfakeDetection() {
+            document.getElementById('fileInput').click();
+        }
+
+        function uploadFile() {
+            var file = document.getElementById('fileInput').files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/deepfake_detection', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                .then(data => alert(JSON.stringify(data)));
+        }
+    </script>
+</body>
+
+</html>
